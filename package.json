@@ -1,6 +1,6 @@
 {
   "name": "fund-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Fund market data API placeholder for the upcoming fund data toolkit.",
   "repository": "https://github.com/zhangxiangliang/fund-api",
   "homepage": "https://github.com/zhangxiangliang/fund-api#readme",
