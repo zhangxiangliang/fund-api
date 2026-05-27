@@ -1,655 +1,386 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>fund-api examples</title>
   <link rel="icon" href="data:,">
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0d111a;
-      --panel: #111520;
-      --panel-2: #0b1020;
-      --line: #1f2635;
-      --text: #f8fafc;
-      --muted: #7c889d;
-      --blue: #60a5fa;
-      --green: #34d399;
-      --red: #fb7185;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 36rem), var(--bg);
-      color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    header {
-      border-bottom: 1px solid var(--line);
-      background: rgba(17, 21, 32, 0.86);
-      backdrop-filter: blur(18px);
-    }
-
-    .nav,
-    main {
-      width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .nav {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .logo {
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.24);
-    }
-
-    .version {
-      display: inline-flex;
-      width: fit-content;
-      margin-top: 4px;
-      padding: 2px 7px;
-      border: 1px solid rgba(96, 165, 250, 0.28);
-      border-radius: 6px;
-      color: var(--blue);
-      font: 600 12px ui-monospace, SFMono-Regular, Menlo, monospace;
-      background: rgba(96, 165, 250, 0.08);
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0 14px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      color: #cbd5e1;
-      background: rgba(15, 23, 42, 0.74);
-      font-weight: 700;
-    }
-
-    main {
-      padding: 70px 0;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.7fr);
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(44px, 8vw, 84px);
-      line-height: 0.95;
-      letter-spacing: -0.06em;
-    }
-
-    .subtitle {
-      margin: 20px 0 0;
-      max-width: 680px;
-      color: var(--muted);
-      font-size: clamp(18px, 2vw, 24px);
-      line-height: 1.55;
-    }
-
-    .subtitle a {
-      color: var(--blue);
-      border-bottom: 1px solid currentColor;
-    }
-
-    .quick-card,
-    .code-card,
-    .demo-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(17, 21, 32, 0.78);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
-    }
-
-    .quick-card {
-      padding: 24px;
-    }
-
-    .quick-card h2,
-    .code-card h2,
-    .demo-card h2 {
-      margin: 0;
-      font-size: 20px;
-      letter-spacing: -0.02em;
-    }
-
-    .quick-card p,
-    .demo-card p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .apis {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .api {
-      min-width: 0;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px;
-      background: rgba(11, 16, 32, 0.78);
-    }
-
-    .api span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
-
-    .api code {
-      color: var(--blue);
-      font-size: 14px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    }
-
-    .section {
-      margin-top: 34px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .code-card {
-      overflow: hidden;
-    }
-
-    .code-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .tag {
-      border: 1px solid rgba(96, 165, 250, 0.26);
-      border-radius: 8px;
-      padding: 4px 8px;
-      color: var(--blue);
-      background: rgba(96, 165, 250, 0.08);
-      font: 700 12px ui-monospace, SFMono-Regular, Menlo, monospace;
-    }
-
-    pre {
-      margin: 0;
-      padding: 20px;
-      overflow-x: auto;
-      background: var(--panel-2);
-      color: #dbeafe;
-      font: 14px/1.8 ui-monospace, SFMono-Regular, Menlo, monospace;
-    }
-
-    .muted {
-      color: #64748b;
-    }
-
-    .keyword {
-      color: #f472b6;
-    }
-
-    .string {
-      color: #86efac;
-    }
-
-    .method {
-      color: #60a5fa;
-    }
-
-    .demo-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 22px;
-    }
-
-    .primary {
-      background: #3b82f6;
-      color: white;
-      border-color: #3b82f6;
-      box-shadow: 0 12px 34px rgba(59, 130, 246, 0.28);
-    }
-
-    .live-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      overflow: hidden;
-      background: rgba(17, 21, 32, 0.78);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
-    }
-
-    .live-head,
-    .live-form,
-    .live-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .live-head {
-      justify-content: space-between;
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .live-head p,
-    .live-meta {
-      color: var(--muted);
-    }
-
-    .live-head p {
-      margin: 4px 0 0;
-    }
-
-    .live-body {
-      display: grid;
-      grid-template-columns: minmax(260px, 0.34fr) minmax(0, 1fr);
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .live-form {
-      align-items: stretch;
-    }
-
-    input {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 0 14px;
-      color: var(--text);
-      background: rgba(11, 16, 32, 0.78);
-      font: 700 15px ui-monospace, SFMono-Regular, Menlo, monospace;
-      outline: none;
-    }
-
-    .quote {
-      margin-top: 18px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
-      background: rgba(11, 16, 32, 0.62);
-    }
-
-    .quote strong {
-      display: block;
-      margin-top: 6px;
-      font-size: 34px;
-      letter-spacing: -0.04em;
-    }
-
-    .quote .change {
-      color: var(--green);
-      font-weight: 800;
-    }
-
-    .chart {
-      min-height: 280px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 14px;
-      background: var(--panel-2);
-    }
-
-    .chart svg {
-      display: block;
-      width: 100%;
-      height: 250px;
-      overflow: visible;
-    }
-
-    .chart-note {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 820px) {
-      .hero,
-      .grid,
-      .live-body {
-        grid-template-columns: 1fr;
-      }
-
-      .apis {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .nav,
-      .demo-card {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .actions {
-        width: 100%;
-      }
-
-      .actions .button {
-        flex: 1;
-      }
-
-      .live-head,
-      .live-form {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
 </head>
-<body>
-  <header>
-    <div class="nav">
-      <a class="brand" href="./">
-        <div class="logo" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19V5"></path>
-            <path d="M4 19h16"></path>
-            <path d="m7 15 4-4 3 3 5-7"></path>
-          </svg>
+<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0d111a] dark:text-slate-100 font-sans antialiased transition-colors">
+  <header class="border-b border-slate-200 dark:border-[#1f2635] bg-white dark:bg-[#111520]">
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 py-3 flex flex-wrap items-center justify-between gap-3">
+      <a href="./" class="flex min-w-0 items-center gap-3">
+        <div class="w-9 h-9 shrink-0 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
         </div>
-        <div>
-          <div>Fund API</div>
-          <div class="version">v1.0.0</div>
+        <div class="flex flex-col items-start gap-1">
+          <span class="font-bold text-lg !leading-none tracking-tight text-slate-900 dark:text-white">Fund API</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-mono leading-none">v1.1.0</span>
         </div>
       </a>
-      <div class="actions">
-        <a class="button" href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="button" href="https://www.npmjs.com/package/fund-api" target="_blank" rel="noreferrer">npm</a>
+
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <a href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer" class="h-10 px-3 bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-[#1f2635] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg transition-all flex items-center justify-center gap-1.5 text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+          <span>GitHub</span>
+        </a>
+
+        <div class="relative">
+          <button onclick="toggleLanguageMenu()" class="h-10 px-3 bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-[#1f2635] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg flex items-center justify-center gap-1.5 text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500 dark:text-slate-400"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg>
+            <span id="language-label">简体中文</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div id="language-menu" class="hidden absolute right-0 mt-1.5 w-32 bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2635] rounded-lg shadow-xl py-1 z-50">
+            <button onclick="setLanguage('zh')" class="w-full px-3 py-1.5 text-left text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">简体中文</button>
+            <button onclick="setLanguage('en')" class="w-full px-3 py-1.5 text-left text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">English</button>
+          </div>
+        </div>
+
+        <button id="theme-toggle" onclick="toggleTheme()" class="h-10 w-10 bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-[#1f2635] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg flex items-center justify-center" title="Theme"></button>
+        <button onclick="openSettings()" class="h-10 w-10 bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-[#1f2635] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg flex items-center justify-center" title="Settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div>
-        <h1>基金接口</h1>
-        <p class="subtitle">
-          <a href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer">fund-api</a>
-          - 一个简洁易用的基金净值接口工具。
-        </p>
+  <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+    <section class="space-y-5">
+      <div class="space-y-1.5">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-[#f8fafc]" data-i18n="title">基金接口</h1>
+        <p class="text-sm text-slate-500 dark:text-[#5f6a80]" id="subtitle"></p>
       </div>
 
-      <div class="quick-card">
-        <h2>4 个接口即可覆盖基础场景</h2>
-        <p>查询单只、批量净值、历史净值和搜索基金，先用最少接口跑起来。</p>
-        <div class="apis">
-          <div class="api">
-            <span>单只基金</span>
-            <code>getFund</code>
+      <div class="w-full bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2635] rounded-xl p-4 shadow-lg">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 shrink-0 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-500 dark:text-blue-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
           </div>
-          <div class="api">
-            <span>批量基金</span>
-            <code>getFunds</code>
+          <div class="min-w-0">
+            <p class="text-sm font-bold text-slate-900 dark:text-slate-100" data-i18n="pitchTitle">4 个接口即可覆盖基础场景</p>
+            <p class="mt-1 text-xs leading-relaxed text-slate-500 dark:text-[#5f6a80]" data-i18n="pitchSubtitle">快速搭建自己的净值体验。</p>
           </div>
-          <div class="api">
-            <span>基金搜索</span>
-            <code>searchFunds</code>
+        </div>
+
+        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-[11px] font-mono">
+          <div class="min-w-0 rounded-lg border border-slate-200 dark:border-[#1f2635] bg-slate-50 dark:bg-[#0d111a] px-3 py-2">
+            <span class="block whitespace-nowrap text-slate-500 dark:text-[#5f6a80] font-sans" data-i18n="singleQuote">单只净值</span>
+            <span class="block truncate text-blue-500 dark:text-blue-400">getFund</span>
           </div>
-          <div class="api">
-            <span>历史净值</span>
-            <code>getNavHistory</code>
+          <div class="min-w-0 rounded-lg border border-slate-200 dark:border-[#1f2635] bg-slate-50 dark:bg-[#0d111a] px-3 py-2">
+            <span class="block whitespace-nowrap text-slate-500 dark:text-[#5f6a80] font-sans" data-i18n="batchQuotes">批量净值</span>
+            <span class="block truncate text-blue-500 dark:text-blue-400">getFunds</span>
+          </div>
+          <div class="min-w-0 rounded-lg border border-slate-200 dark:border-[#1f2635] bg-slate-50 dark:bg-[#0d111a] px-3 py-2">
+            <span class="block whitespace-nowrap text-slate-500 dark:text-[#5f6a80] font-sans" data-i18n="symbolSearch">基金搜索</span>
+            <span class="block truncate text-blue-500 dark:text-blue-400">searchFunds</span>
+          </div>
+          <div class="min-w-0 rounded-lg border border-slate-200 dark:border-[#1f2635] bg-slate-50 dark:bg-[#0d111a] px-3 py-2">
+            <span class="block whitespace-nowrap text-slate-500 dark:text-[#5f6a80] font-sans" data-i18n="klineData">历史净值</span>
+            <span class="block truncate text-blue-500 dark:text-blue-400">getNavHistory</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="live-card">
-        <div class="live-head">
-          <div>
-            <h2>历史净值 Demo</h2>
-            <p>用腾讯基金数据源展示最新净值和历史净值曲线。</p>
-          </div>
-          <span class="tag" id="liveStatus">loading</span>
-        </div>
-        <div class="live-body">
-          <div>
-            <div class="live-form">
-              <input id="fundCode" value="110022" aria-label="fund code">
-              <button class="button primary" id="loadFund" type="button">查询</button>
-            </div>
-            <div class="quote">
-              <span id="fundName">-</span>
-              <strong id="fundNav">--</strong>
-              <div class="live-meta">
-                <span id="fundDate">--</span>
-                <span class="change" id="fundChange">--</span>
-              </div>
-            </div>
-          </div>
-          <div class="chart">
-            <svg id="navChart" viewBox="0 0 760 250" role="img" aria-label="fund nav history chart"></svg>
-            <p class="chart-note" id="chartNote">历史净值加载中...</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section grid">
-      <div class="code-card">
-        <div class="code-head">
-          <h2>Node.js 使用</h2>
-          <span class="tag">Node.js</span>
-        </div>
-        <pre><code><span class="muted">// npm install fund-api</span>
-<span class="keyword">const</span> { funds } = require(<span class="string">"fund-api"</span>);
-
-<span class="keyword">const</span> fund = <span class="keyword">await</span> funds.auto.<span class="method">getFund</span>(<span class="string">"110022"</span>);
-<span class="keyword">const</span> list = <span class="keyword">await</span> funds.auto.<span class="method">getFunds</span>([<span class="string">"110022"</span>, <span class="string">"000001"</span>]);
-<span class="keyword">const</span> history = <span class="keyword">await</span> funds.auto.<span class="method">getNavHistory</span>(<span class="string">"110022"</span>);
-<span class="keyword">const</span> results = <span class="keyword">await</span> funds.auto.<span class="method">searchFunds</span>(<span class="string">"易方达消费"</span>);</code></pre>
+    <section class="mt-8 space-y-4">
+      <div class="inline-flex rounded-xl border border-slate-200 dark:border-[#1f2635] bg-white dark:bg-[#111520] p-1 shadow-lg">
+        <button id="tab-demo" onclick="setHomeTab('demo')" class="rounded-lg px-4 py-2 text-xs font-bold transition-colors" data-i18n="demoTab">Demo List</button>
+        <button id="tab-usage" onclick="setHomeTab('usage')" class="rounded-lg px-4 py-2 text-xs font-bold transition-colors" data-i18n="usageTab">使用方式</button>
       </div>
 
-      <div class="code-card">
-        <div class="code-head">
-          <h2>TypeScript 类型</h2>
-          <span class="tag">types</span>
-        </div>
-        <pre><code><span class="keyword">interface</span> Fund {
-  code: string;
-  name: string;
-  nav: number;
-  accNav: number;
-  change: number;
-  navDate: string;
-  source: <span class="string">"tencent"</span>;
-}
-
-<span class="keyword">interface</span> FundNavHistoryItem {
-  date: string;
-  nav: number;
-  accNav: number;
-  source: <span class="string">"tencent"</span>;
-}</code></pre>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="demo-card">
+      <div id="demo-panel" class="space-y-4">
         <div>
-          <h2>Demo List</h2>
-          <p>后续可以在这里继续增加基金搜索、净值详情、走势图等示例。</p>
+          <h2 class="text-sm font-bold tracking-wider uppercase text-slate-500 dark:text-slate-400" data-i18n="demoList">Demo List</h2>
+          <p class="mt-1 text-xs text-slate-500 dark:text-[#5f6a80]" data-i18n="demoHint">选择一个示例查看 fund-api 的实际用法。</p>
         </div>
-        <a class="button primary" href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer">查看项目</a>
+
+        <a href="./web-demo/" class="group block bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2635] hover:border-blue-500/50 rounded-xl p-5 shadow-lg transition-all">
+          <div class="flex items-start justify-between gap-4">
+            <div class="min-w-0">
+              <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" data-i18n="webExampleTitle">基金接口 Web Demo</h2>
+              <p class="mt-2 text-sm leading-relaxed text-slate-500 dark:text-[#5f6a80]" data-i18n="webExampleDesc">查询单只基金、批量净值、搜索基金和历史净值，展示 fund-api 在浏览器里的完整用法。</p>
+            </div>
+            <div class="shrink-0 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-500 dark:text-blue-400 flex items-center justify-center p-2" data-i18n="tryDemo">体验</div>
+          </div>
+        </a>
+      </div>
+
+      <div id="usage-panel" class="hidden space-y-4">
+        <div class="bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2635] rounded-xl overflow-hidden shadow-lg">
+        <div class="px-4 py-3 border-b border-slate-200 dark:border-[#1f2635] flex items-center justify-between gap-3">
+          <div>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-slate-100" data-i18n="nodeUsage">Node.js 使用</h2>
+            <p class="mt-0.5 text-[11px] text-slate-500 dark:text-[#5f6a80]" data-i18n="nodeUsageHint">安装后直接使用默认自动数据源。</p>
+          </div>
+          <span class="shrink-0 rounded-md border border-blue-500/20 bg-blue-500/10 px-2 py-1 text-[10px] font-mono text-blue-500 dark:text-blue-400">Node.js</span>
+        </div>
+        <pre class="m-0 overflow-x-auto bg-slate-950 p-4 text-[12px] leading-6 text-slate-200"><code><span class="text-slate-500">// npm install fund-api</span>
+<span class="text-pink-400">import</span> { funds } <span class="text-pink-400">from</span> <span class="text-green-300">"fund-api"</span>;
+
+<span class="text-pink-400">const</span> fund = <span class="text-pink-400">await</span> funds.auto.getFund(<span class="text-green-300">"110022"</span>);
+<span class="text-pink-400">const</span> list = <span class="text-pink-400">await</span> funds.auto.getFunds([<span class="text-green-300">"110022"</span>, <span class="text-green-300">"000001"</span>]);
+<span class="text-pink-400">const</span> history = <span class="text-pink-400">await</span> funds.auto.getNavHistory(<span class="text-green-300">"110022"</span>);
+<span class="text-pink-400">const</span> results = <span class="text-pink-400">await</span> funds.auto.searchFunds(<span class="text-green-300">"易方达消费"</span>);</code></pre>
+      </div>
+
+      <div class="bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2635] rounded-xl overflow-hidden shadow-lg">
+        <div class="px-4 py-3 border-b border-slate-200 dark:border-[#1f2635] flex items-center justify-between gap-3">
+          <div>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-slate-100" data-i18n="browserUsage">Browser 使用</h2>
+            <p class="mt-0.5 text-[11px] text-slate-500 dark:text-[#5f6a80]" data-i18n="browserUsageHint">通过 CDN 在页面中直接调用。</p>
+          </div>
+          <span class="shrink-0 rounded-md border border-indigo-500/20 bg-indigo-500/10 px-2 py-1 text-[10px] font-mono text-indigo-500 dark:text-indigo-400">CDN</span>
+        </div>
+        <pre class="m-0 overflow-x-auto bg-slate-950 p-4 text-[12px] leading-6 text-slate-200"><code><span class="text-slate-500">&lt;script src=</span><span class="text-green-300">"https://cdn.jsdelivr.net/npm/fund-api/dist/browser/fund-api.iife.min.js"</span><span class="text-slate-500">&gt;&lt;/script&gt;</span>
+<span class="text-slate-500">&lt;script&gt;</span>
+  FundApi.funds.auto.getFund(<span class="text-green-300">"110022"</span>).then(console.log);
+  FundApi.funds.auto.getFunds([<span class="text-green-300">"110022"</span>, <span class="text-green-300">"000001"</span>]).then(console.log);
+  FundApi.funds.auto.getNavHistory(<span class="text-green-300">"110022"</span>).then(console.log);
+  FundApi.funds.auto.searchFunds(<span class="text-green-300">"易方达消费"</span>).then(console.log);
+<span class="text-slate-500">&lt;/script&gt;</span></code></pre>
+      </div>
+
+      <div class="bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2635] rounded-xl overflow-hidden shadow-lg">
+        <div class="px-4 py-3 border-b border-slate-200 dark:border-[#1f2635] flex items-center justify-between gap-3">
+          <div>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-slate-100" data-i18n="mcpUsage">MCP 使用</h2>
+            <p class="mt-0.5 text-[11px] text-slate-500 dark:text-[#5f6a80]" data-i18n="mcpUsageHint">接入支持 MCP 的 AI 客户端。</p>
+          </div>
+          <span class="shrink-0 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-1 text-[10px] font-mono text-emerald-500 dark:text-emerald-400">MCP</span>
+        </div>
+        <pre class="m-0 overflow-x-auto bg-slate-950 p-4 text-[12px] leading-6 text-slate-200"><code>{
+  <span class="text-green-300">"mcpServers"</span>: {
+    <span class="text-green-300">"fund-api"</span>: {
+      <span class="text-green-300">"command"</span>: <span class="text-green-300">"npx"</span>,
+      <span class="text-green-300">"args"</span>: [<span class="text-green-300">"-y"</span>, <span class="text-green-300">"fund-api"</span>, <span class="text-green-300">"mcp"</span>]
+    }
+  }
+}</code></pre>
+        </div>
       </div>
     </section>
   </main>
-  <script>
-    const scriptSources = [
-      "./vendor/fund-api.iife.min.js",
-      "../dist/browser/fund-api.iife.min.js",
-      "https://cdn.jsdelivr.net/npm/fund-api/dist/browser/fund-api.iife.min.js",
-    ];
 
-    const elements = {
-      chart: document.getElementById("navChart"),
-      chartNote: document.getElementById("chartNote"),
-      code: document.getElementById("fundCode"),
-      date: document.getElementById("fundDate"),
-      load: document.getElementById("loadFund"),
-      name: document.getElementById("fundName"),
-      nav: document.getElementById("fundNav"),
-      change: document.getElementById("fundChange"),
-      status: document.getElementById("liveStatus"),
+  <div id="settings-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2635] rounded-xl w-full max-w-md shadow-2xl p-6 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+      <div class="flex justify-between items-start mb-6">
+        <div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-slate-100" data-i18n="settingsTitle">偏好设置</h3>
+          <p class="text-xs text-slate-500 dark:text-[#5f6a80] mt-0.5" data-i18n="settingsSubtitle">这些设置会与所有示例共用。</p>
+        </div>
+        <button onclick="closeSettings()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">×</button>
+      </div>
+      <div class="space-y-5">
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block" data-i18n="colorRule">涨跌颜色规则</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="color-intl" onclick="setColorRule('intl')" class="px-3 py-2 text-xs border border-slate-200 dark:border-[#1f2635] bg-slate-50 dark:bg-slate-900 rounded-lg text-left transition-all">
+              <span class="block text-slate-700 dark:text-slate-300" data-i18n="greenUp">红跌绿涨</span>
+            </button>
+            <button id="color-asia" onclick="setColorRule('asia')" class="px-3 py-2 text-xs border border-slate-200 dark:border-[#1f2635] bg-slate-50 dark:bg-slate-900 rounded-lg text-left transition-all">
+              <span class="block text-slate-700 dark:text-slate-300" data-i18n="redUp">红涨绿跌</span>
+            </button>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <label for="refresh-interval" class="text-xs font-semibold text-slate-700 dark:text-slate-300 block" data-i18n="requestInterval">请求频率</label>
+          <div class="flex items-center gap-2">
+            <input id="refresh-interval" type="number" min="10" step="5" class="w-28 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-[#1f2635] text-slate-800 dark:text-slate-100 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-500" value="30">
+            <span class="text-xs text-slate-500 dark:text-slate-400" data-i18n="seconds">秒</span>
+          </div>
+          <p class="text-[10px] leading-relaxed text-amber-600 dark:text-amber-400" data-i18n="requestHint">不建议设置过小，过于频繁请求可能触发第三方数据源限流或禁止访问。</p>
+        </div>
+      </div>
+      <div class="mt-8 flex justify-end">
+        <button onclick="saveSettings()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-xs font-semibold rounded-lg text-white shadow-lg shadow-blue-500/10 transition-colors" data-i18n="confirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const refreshIntervalStorageKey = 'sa_refresh_interval_seconds_v2';
+    const colorRuleStorageKey = 'sa_color_rule_v2';
+    const dict = {
+      zh: {
+        title: '基金接口',
+        subtitle: '<a href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer" class="text-blue-500 dark:text-blue-400 hover:text-blue-300 underline underline-offset-4">fund-api</a> - 一个简洁易用的基金净值接口工具',
+        pitchTitle: '4 个接口即可覆盖基础场景',
+        pitchSubtitle: '快速搭建自己的净值体验。',
+        singleQuote: '单只净值',
+        batchQuotes: '批量净值',
+        symbolSearch: '基金搜索',
+        klineData: '历史净值',
+        nodeUsage: 'Node.js 使用',
+        nodeUsageHint: '安装后直接使用默认自动数据源。',
+        browserUsage: 'Browser 使用',
+        browserUsageHint: '通过 CDN 在页面中直接调用。',
+        mcpUsage: 'MCP 使用',
+        mcpUsageHint: '接入支持 MCP 的 AI 客户端。',
+        demoTab: 'Demo List',
+        usageTab: '使用方式',
+        demoList: 'Demo List',
+        demoHint: '选择一个示例查看 fund-api 的实际用法。',
+        webExampleTitle: '基金接口 Web Demo',
+        webExampleDesc: '查询单只基金、批量净值、搜索基金和历史净值，展示 fund-api 在浏览器里的完整用法。',
+        tryDemo: '体验',
+        settingsTitle: '偏好设置',
+        settingsSubtitle: '这些设置会与所有示例共用。',
+        colorRule: '涨跌颜色规则',
+        greenUp: '红跌绿涨',
+        redUp: '红涨绿跌',
+        requestInterval: '请求频率',
+        seconds: '秒',
+        requestHint: '不建议设置过小，过于频繁请求可能触发第三方数据源限流或禁止访问。',
+        confirm: '确定',
+        languageLabel: '简体中文',
+      },
+      en: {
+        title: 'fund-api examples',
+        subtitle: 'A collection of examples powered by <a href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer" class="text-blue-500 dark:text-blue-400 hover:text-blue-300 underline underline-offset-4">fund-api</a>, covering browser integration and common market data flows.',
+        pitchTitle: 'Most use cases need only 4 APIs',
+        pitchSubtitle: 'To build a market experience fast.',
+        singleQuote: 'Single quote',
+        batchQuotes: 'Batch quotes',
+        symbolSearch: 'Symbol search',
+        klineData: 'NAV history data',
+        nodeUsage: 'Node.js Usage',
+        nodeUsageHint: 'Install the package and use the default auto provider.',
+        browserUsage: 'Browser Usage',
+        browserUsageHint: 'Load it from a CDN and call it directly in the page.',
+        mcpUsage: 'MCP Usage',
+        mcpUsageHint: 'Connect fund-api to MCP-compatible AI clients.',
+        demoTab: 'Demo List',
+        usageTab: 'Usage',
+        demoList: 'Demo List',
+        demoHint: 'Choose an example to see fund-api in action.',
+        webExampleTitle: 'Fund API Web Demo',
+        webExampleDesc: 'Fetch one quote, batch quotes, search symbols, and load NAV history in the browser.',
+        tryDemo: 'Try',
+        settingsTitle: 'Settings',
+        settingsSubtitle: 'These settings are shared by all examples.',
+        colorRule: 'Market color rule',
+        greenUp: 'Green up / red down',
+        redUp: 'Red up / green down',
+        requestInterval: 'Request interval',
+        seconds: 'seconds',
+        requestHint: 'Avoid very small intervals. Frequent requests may trigger third-party data source rate limits or blocks.',
+        confirm: 'Confirm',
+        languageLabel: 'English',
+      },
     };
 
-    loadFundApi().then(() => loadFund()).catch((error) => {
-      setStatus("failed");
-      elements.chartNote.textContent = error.message || String(error);
-    });
+    let currentLanguage = localStorage.getItem('sa_lang') || 'zh';
+    let currentTheme = localStorage.getItem('sa_theme') || 'dark';
+    let currentColorRule = localStorage.getItem(colorRuleStorageKey) || 'asia';
+    let currentHomeTab = 'demo';
 
-    elements.load.addEventListener("click", loadFund);
-    elements.code.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        loadFund();
-      }
-    });
+    function applyTheme() {
+      document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+      document.getElementById('theme-toggle').innerHTML = currentTheme === 'dark'
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>';
+    }
 
-    function loadFundApi(index = 0) {
-      return new Promise((resolve, reject) => {
-        if (window.FundApi) {
-          resolve();
-          return;
-        }
-
-        const script = document.createElement("script");
-        script.src = scriptSources[index];
-        script.onload = () => resolve();
-        script.onerror = () => {
-          script.remove();
-          if (index + 1 < scriptSources.length) {
-            loadFundApi(index + 1).then(resolve).catch(reject);
-            return;
-          }
-          reject(new Error("fund-api browser bundle failed to load"));
-        };
-        document.head.appendChild(script);
+    function translate() {
+      const lang = dict[currentLanguage] || dict.zh;
+      document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
+      document.getElementById('language-label').innerText = lang.languageLabel;
+      document.getElementById('subtitle').innerHTML = lang.subtitle;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (lang[key]) el.innerText = lang[key];
       });
     }
 
-    async function loadFund() {
-      const code = elements.code.value.trim() || "110022";
-      setStatus("loading");
-      elements.load.disabled = true;
-
-      try {
-        const [fund, history] = await Promise.all([
-          window.FundApi.funds.auto.getFund(code),
-          window.FundApi.funds.auto.getNavHistory(code),
-        ]);
-
-        renderFund(fund);
-        renderChart(history.slice(-180));
-        setStatus("ready");
-      } catch (error) {
-        setStatus("failed");
-        elements.chartNote.textContent = error.message || String(error);
-      } finally {
-        elements.load.disabled = false;
-      }
+    function toggleLanguageMenu() {
+      document.getElementById('language-menu').classList.toggle('hidden');
     }
 
-    function renderFund(fund) {
-      elements.name.textContent = fund.name || "未找到基金";
-      elements.nav.textContent = Number.isFinite(fund.nav) ? fund.nav.toFixed(4) : "--";
-      elements.date.textContent = fund.navDate || "--";
-      elements.change.textContent = Number.isFinite(fund.change)
-        ? `${fund.change > 0 ? "+" : ""}${fund.change.toFixed(2)}%`
-        : "--";
-      elements.change.style.color = fund.change >= 0 ? "var(--red)" : "var(--green)";
+    function setLanguage(language) {
+      currentLanguage = language;
+      localStorage.setItem('sa_lang', currentLanguage);
+      document.getElementById('language-menu').classList.add('hidden');
+      translate();
     }
 
-    function renderChart(history) {
-      const width = 760;
-      const height = 250;
-      const padding = 24;
-      const values = history.map((item) => item.nav).filter(Number.isFinite);
-      const min = Math.min(...values);
-      const max = Math.max(...values);
-      const range = max - min || 1;
+    function setHomeTab(tab) {
+      currentHomeTab = tab === 'usage' ? 'usage' : 'demo';
+      document.getElementById('demo-panel').classList.toggle('hidden', currentHomeTab !== 'demo');
+      document.getElementById('usage-panel').classList.toggle('hidden', currentHomeTab !== 'usage');
 
-      if (!history.length || !values.length) {
-        elements.chart.innerHTML = "";
-        elements.chartNote.textContent = "暂无历史净值数据。";
-        return;
-      }
-
-      const points = history.map((item, index) => {
-        const x = padding + (index / Math.max(history.length - 1, 1)) * (width - padding * 2);
-        const y = height - padding - ((item.nav - min) / range) * (height - padding * 2);
-        return `${x.toFixed(2)},${y.toFixed(2)}`;
+      [
+        ['demo', document.getElementById('tab-demo')],
+        ['usage', document.getElementById('tab-usage')],
+      ].forEach(([name, el]) => {
+        const active = name === currentHomeTab;
+        el.classList.toggle('bg-blue-600', active);
+        el.classList.toggle('text-white', active);
+        el.classList.toggle('shadow-sm', active);
+        el.classList.toggle('text-slate-500', !active);
+        el.classList.toggle('dark:text-slate-400', !active);
+        el.classList.toggle('hover:text-slate-900', !active);
+        el.classList.toggle('dark:hover:text-slate-100', !active);
       });
-
-      const last = history[history.length - 1];
-      elements.chart.innerHTML = `
-        <line x1="${padding}" y1="${padding}" x2="${width - padding}" y2="${padding}" stroke="#1f2635" />
-        <line x1="${padding}" y1="${height / 2}" x2="${width - padding}" y2="${height / 2}" stroke="#1f2635" />
-        <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="#1f2635" />
-        <polyline points="${points.join(" ")}" fill="none" stroke="#60a5fa" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" />
-        <circle cx="${points[points.length - 1].split(",")[0]}" cy="${points[points.length - 1].split(",")[1]}" r="5" fill="#34d399" />
-        <text x="${padding}" y="18" fill="#7c889d" font-size="12">${max.toFixed(4)}</text>
-        <text x="${padding}" y="${height - 8}" fill="#7c889d" font-size="12">${min.toFixed(4)}</text>
-      `;
-      elements.chartNote.textContent = `${history[0].date} - ${last.date} / ${history.length} 条`;
     }
 
-    function setStatus(value) {
-      elements.status.textContent = value;
+    function toggleTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('sa_theme', currentTheme);
+      applyTheme();
     }
+
+    function setColorRule(rule) {
+      currentColorRule = rule;
+      localStorage.setItem(colorRuleStorageKey, rule);
+      syncColorRuleButtons();
+    }
+
+    function syncColorRuleButtons() {
+      ['intl', 'asia'].forEach(rule => {
+        const el = document.getElementById(`color-${rule}`);
+        el.classList.toggle('border-blue-500', currentColorRule === rule);
+        el.classList.toggle('bg-blue-500/10', currentColorRule === rule);
+      });
+    }
+
+    function normalizeRefreshInterval(value) {
+      const seconds = Number(value);
+      return Number.isFinite(seconds) && seconds >= 10 ? Math.round(seconds) : 30;
+    }
+
+    function openSettings() {
+      document.getElementById('refresh-interval').value = normalizeRefreshInterval(localStorage.getItem(refreshIntervalStorageKey));
+      syncColorRuleButtons();
+      document.getElementById('settings-modal').classList.remove('hidden');
+    }
+
+    function closeSettings() {
+      document.getElementById('settings-modal').classList.add('hidden');
+    }
+
+    function saveSettings() {
+      localStorage.setItem(refreshIntervalStorageKey, normalizeRefreshInterval(document.getElementById('refresh-interval').value));
+      closeSettings();
+    }
+
+    document.addEventListener('click', event => {
+      if (!event.target.closest('#language-menu') && !event.target.closest('[onclick="toggleLanguageMenu()"]')) {
+        document.getElementById('language-menu').classList.add('hidden');
+      }
+    });
+
+    applyTheme();
+    translate();
+    setHomeTab('demo');
   </script>
 </body>
 </html>
