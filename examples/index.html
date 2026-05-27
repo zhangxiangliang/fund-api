@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fund-api examples</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d111a;
+      --panel: #111520;
+      --panel-2: #0b1020;
+      --line: #1f2635;
+      --text: #f8fafc;
+      --muted: #7c889d;
+      --blue: #60a5fa;
+      --green: #34d399;
+      --red: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 36rem), var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(17, 21, 32, 0.86);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav,
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.24);
+    }
+
+    .version {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 4px;
+      padding: 2px 7px;
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      border-radius: 6px;
+      color: var(--blue);
+      font: 600 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: rgba(96, 165, 250, 0.08);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: #cbd5e1;
+      background: rgba(15, 23, 42, 0.74);
+      font-weight: 700;
+    }
+
+    main {
+      padding: 70px 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.7fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 8vw, 84px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+    }
+
+    .subtitle {
+      margin: 20px 0 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.55;
+    }
+
+    .subtitle a {
+      color: var(--blue);
+      border-bottom: 1px solid currentColor;
+    }
+
+    .quick-card,
+    .code-card,
+    .demo-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(17, 21, 32, 0.78);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+    }
+
+    .quick-card {
+      padding: 24px;
+    }
+
+    .quick-card h2,
+    .code-card h2,
+    .demo-card h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .quick-card p,
+    .demo-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .apis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .api {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(11, 16, 32, 0.78);
+    }
+
+    .api span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .api code {
+      color: var(--blue);
+      font-size: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .code-card {
+      overflow: hidden;
+    }
+
+    .code-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tag {
+      border: 1px solid rgba(96, 165, 250, 0.26);
+      border-radius: 8px;
+      padding: 4px 8px;
+      color: var(--blue);
+      background: rgba(96, 165, 250, 0.08);
+      font: 700 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    pre {
+      margin: 0;
+      padding: 20px;
+      overflow-x: auto;
+      background: var(--panel-2);
+      color: #dbeafe;
+      font: 14px/1.8 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .muted {
+      color: #64748b;
+    }
+
+    .keyword {
+      color: #f472b6;
+    }
+
+    .string {
+      color: #86efac;
+    }
+
+    .method {
+      color: #60a5fa;
+    }
+
+    .demo-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px;
+    }
+
+    .primary {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+      box-shadow: 0 12px 34px rgba(59, 130, 246, 0.28);
+    }
+
+    .live-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(17, 21, 32, 0.78);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+    }
+
+    .live-head,
+    .live-form,
+    .live-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .live-head {
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .live-head p,
+    .live-meta {
+      color: var(--muted);
+    }
+
+    .live-head p {
+      margin: 4px 0 0;
+    }
+
+    .live-body {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.34fr) minmax(0, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .live-form {
+      align-items: stretch;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0 14px;
+      color: var(--text);
+      background: rgba(11, 16, 32, 0.78);
+      font: 700 15px ui-monospace, SFMono-Regular, Menlo, monospace;
+      outline: none;
+    }
+
+    .quote {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      background: rgba(11, 16, 32, 0.62);
+    }
+
+    .quote strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 34px;
+      letter-spacing: -0.04em;
+    }
+
+    .quote .change {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .chart {
+      min-height: 280px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: var(--panel-2);
+    }
+
+    .chart svg {
+      display: block;
+      width: 100%;
+      height: 250px;
+      overflow: visible;
+    }
+
+    .chart-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .hero,
+      .grid,
+      .live-body {
+        grid-template-columns: 1fr;
+      }
+
+      .apis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav,
+      .demo-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .actions .button {
+        flex: 1;
+      }
+
+      .live-head,
+      .live-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a class="brand" href="./">
+        <div class="logo" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19V5"></path>
+            <path d="M4 19h16"></path>
+            <path d="m7 15 4-4 3 3 5-7"></path>
+          </svg>
+        </div>
+        <div>
+          <div>Fund API</div>
+          <div class="version">v1.0.0</div>
+        </div>
+      </a>
+      <div class="actions">
+        <a class="button" href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="button" href="https://www.npmjs.com/package/fund-api" target="_blank" rel="noreferrer">npm</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1>基金接口</h1>
+        <p class="subtitle">
+          <a href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer">fund-api</a>
+          - 一个简洁易用的基金净值接口工具。
+        </p>
+      </div>
+
+      <div class="quick-card">
+        <h2>4 个接口即可覆盖基础场景</h2>
+        <p>查询单只、批量净值、历史净值和搜索基金，先用最少接口跑起来。</p>
+        <div class="apis">
+          <div class="api">
+            <span>单只基金</span>
+            <code>getFund</code>
+          </div>
+          <div class="api">
+            <span>批量基金</span>
+            <code>getFunds</code>
+          </div>
+          <div class="api">
+            <span>基金搜索</span>
+            <code>searchFunds</code>
+          </div>
+          <div class="api">
+            <span>历史净值</span>
+            <code>getNavHistory</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="live-card">
+        <div class="live-head">
+          <div>
+            <h2>历史净值 Demo</h2>
+            <p>用腾讯基金数据源展示最新净值和历史净值曲线。</p>
+          </div>
+          <span class="tag" id="liveStatus">loading</span>
+        </div>
+        <div class="live-body">
+          <div>
+            <div class="live-form">
+              <input id="fundCode" value="110022" aria-label="fund code">
+              <button class="button primary" id="loadFund" type="button">查询</button>
+            </div>
+            <div class="quote">
+              <span id="fundName">-</span>
+              <strong id="fundNav">--</strong>
+              <div class="live-meta">
+                <span id="fundDate">--</span>
+                <span class="change" id="fundChange">--</span>
+              </div>
+            </div>
+          </div>
+          <div class="chart">
+            <svg id="navChart" viewBox="0 0 760 250" role="img" aria-label="fund nav history chart"></svg>
+            <p class="chart-note" id="chartNote">历史净值加载中...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid">
+      <div class="code-card">
+        <div class="code-head">
+          <h2>Node.js 使用</h2>
+          <span class="tag">Node.js</span>
+        </div>
+        <pre><code><span class="muted">// npm install fund-api</span>
+<span class="keyword">const</span> { funds } = require(<span class="string">"fund-api"</span>);
+
+<span class="keyword">const</span> fund = <span class="keyword">await</span> funds.auto.<span class="method">getFund</span>(<span class="string">"110022"</span>);
+<span class="keyword">const</span> list = <span class="keyword">await</span> funds.auto.<span class="method">getFunds</span>([<span class="string">"110022"</span>, <span class="string">"000001"</span>]);
+<span class="keyword">const</span> history = <span class="keyword">await</span> funds.auto.<span class="method">getNavHistory</span>(<span class="string">"110022"</span>);
+<span class="keyword">const</span> results = <span class="keyword">await</span> funds.auto.<span class="method">searchFunds</span>(<span class="string">"易方达消费"</span>);</code></pre>
+      </div>
+
+      <div class="code-card">
+        <div class="code-head">
+          <h2>TypeScript 类型</h2>
+          <span class="tag">types</span>
+        </div>
+        <pre><code><span class="keyword">interface</span> Fund {
+  code: string;
+  name: string;
+  nav: number;
+  accNav: number;
+  change: number;
+  navDate: string;
+  source: <span class="string">"tencent"</span>;
+}
+
+<span class="keyword">interface</span> FundNavHistoryItem {
+  date: string;
+  nav: number;
+  accNav: number;
+  source: <span class="string">"tencent"</span>;
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="demo-card">
+        <div>
+          <h2>Demo List</h2>
+          <p>后续可以在这里继续增加基金搜索、净值详情、走势图等示例。</p>
+        </div>
+        <a class="button primary" href="https://github.com/zhangxiangliang/fund-api" target="_blank" rel="noreferrer">查看项目</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    const scriptSources = [
+      "./vendor/fund-api.iife.min.js",
+      "../dist/browser/fund-api.iife.min.js",
+      "https://cdn.jsdelivr.net/npm/fund-api/dist/browser/fund-api.iife.min.js",
+    ];
+
+    const elements = {
+      chart: document.getElementById("navChart"),
+      chartNote: document.getElementById("chartNote"),
+      code: document.getElementById("fundCode"),
+      date: document.getElementById("fundDate"),
+      load: document.getElementById("loadFund"),
+      name: document.getElementById("fundName"),
+      nav: document.getElementById("fundNav"),
+      change: document.getElementById("fundChange"),
+      status: document.getElementById("liveStatus"),
+    };
+
+    loadFundApi().then(() => loadFund()).catch((error) => {
+      setStatus("failed");
+      elements.chartNote.textContent = error.message || String(error);
+    });
+
+    elements.load.addEventListener("click", loadFund);
+    elements.code.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        loadFund();
+      }
+    });
+
+    function loadFundApi(index = 0) {
+      return new Promise((resolve, reject) => {
+        if (window.FundApi) {
+          resolve();
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = scriptSources[index];
+        script.onload = () => resolve();
+        script.onerror = () => {
+          script.remove();
+          if (index + 1 < scriptSources.length) {
+            loadFundApi(index + 1).then(resolve).catch(reject);
+            return;
+          }
+          reject(new Error("fund-api browser bundle failed to load"));
+        };
+        document.head.appendChild(script);
+      });
+    }
+
+    async function loadFund() {
+      const code = elements.code.value.trim() || "110022";
+      setStatus("loading");
+      elements.load.disabled = true;
+
+      try {
+        const [fund, history] = await Promise.all([
+          window.FundApi.funds.auto.getFund(code),
+          window.FundApi.funds.auto.getNavHistory(code),
+        ]);
+
+        renderFund(fund);
+        renderChart(history.slice(-180));
+        setStatus("ready");
+      } catch (error) {
+        setStatus("failed");
+        elements.chartNote.textContent = error.message || String(error);
+      } finally {
+        elements.load.disabled = false;
+      }
+    }
+
+    function renderFund(fund) {
+      elements.name.textContent = fund.name || "未找到基金";
+      elements.nav.textContent = Number.isFinite(fund.nav) ? fund.nav.toFixed(4) : "--";
+      elements.date.textContent = fund.navDate || "--";
+      elements.change.textContent = Number.isFinite(fund.change)
+        ? `${fund.change > 0 ? "+" : ""}${fund.change.toFixed(2)}%`
+        : "--";
+      elements.change.style.color = fund.change >= 0 ? "var(--red)" : "var(--green)";
+    }
+
+    function renderChart(history) {
+      const width = 760;
+      const height = 250;
+      const padding = 24;
+      const values = history.map((item) => item.nav).filter(Number.isFinite);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const range = max - min || 1;
+
+      if (!history.length || !values.length) {
+        elements.chart.innerHTML = "";
+        elements.chartNote.textContent = "暂无历史净值数据。";
+        return;
+      }
+
+      const points = history.map((item, index) => {
+        const x = padding + (index / Math.max(history.length - 1, 1)) * (width - padding * 2);
+        const y = height - padding - ((item.nav - min) / range) * (height - padding * 2);
+        return `${x.toFixed(2)},${y.toFixed(2)}`;
+      });
+
+      const last = history[history.length - 1];
+      elements.chart.innerHTML = `
+        <line x1="${padding}" y1="${padding}" x2="${width - padding}" y2="${padding}" stroke="#1f2635" />
+        <line x1="${padding}" y1="${height / 2}" x2="${width - padding}" y2="${height / 2}" stroke="#1f2635" />
+        <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="#1f2635" />
+        <polyline points="${points.join(" ")}" fill="none" stroke="#60a5fa" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" />
+        <circle cx="${points[points.length - 1].split(",")[0]}" cy="${points[points.length - 1].split(",")[1]}" r="5" fill="#34d399" />
+        <text x="${padding}" y="18" fill="#7c889d" font-size="12">${max.toFixed(4)}</text>
+        <text x="${padding}" y="${height - 8}" fill="#7c889d" font-size="12">${min.toFixed(4)}</text>
+      `;
+      elements.chartNote.textContent = `${history[0].date} - ${last.date} / ${history.length} 条`;
+    }
+
+    function setStatus(value) {
+      elements.status.textContent = value;
+    }
+  </script>
+</body>
+</html>

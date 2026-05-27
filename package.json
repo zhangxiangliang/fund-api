@@ -1,30 +1,59 @@
 {
   "name": "fund-api",
   "version": "1.0.0",
-  "description": "Fund market data API placeholder for the upcoming fund data toolkit.",
+  "description": "Fund market data API for Node.js and TypeScript",
   "repository": "https://github.com/zhangxiangliang/fund-api",
   "homepage": "https://github.com/zhangxiangliang/fund-api#readme",
   "bugs": {
     "url": "https://github.com/zhangxiangliang/fund-api/issues"
   },
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/browser/fund-api.esm.mjs",
+  "browser": "dist/browser/fund-api.esm.mjs",
+  "unpkg": "dist/browser/fund-api.iife.min.js",
+  "jsdelivr": "dist/browser/fund-api.iife.min.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "fund-api": "dist/cli.js"
+  },
   "scripts": {
-    "build": "node --check index.js",
-    "ci": "npm run build && npm test",
-    "test": "node test.js",
-    "validate": "npm run ci",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "prebuild": "npm run clean",
+    "build": "npm run build:node && npm run build:browser",
+    "build:browser": "node scripts/build-browser.mjs",
+    "build:node": "tsc -p tsconfig.build.json",
+    "ci": "npm run build && npm run typecheck && npm run test:unit",
+    "examples": "node scripts/serve-examples.mjs",
+    "postbuild": "node -e \"require('fs').chmodSync('dist/cli.js', 0o755)\"",
+    "prepack": "npm run build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:browser": "npm run build:browser && node scripts/browser-smoke.mjs",
+    "test:integration": "jest --config jest.integration.config.js --runInBand",
+    "test:node": "jest --config jest.config.js --coverage",
+    "test:unit": "npm run test:node -- --runInBand",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
+    "validate": "npm run lint && npm run ci",
     "validate:release": "npm run validate"
   },
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "default": "./index.js"
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/browser/fund-api.esm.mjs",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./browser": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/browser/fund-api.esm.mjs",
+      "default": "./dist/browser/fund-api.esm.mjs"
     }
   },
   "files": [
-    "index.js",
-    "index.d.ts",
+    "dist/**/*",
+    "docs/**/*",
     "README.md",
     "LICENSE"
   ],
@@ -40,12 +69,26 @@
   ],
   "author": "zhangxiangliang",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "semantic-release": "^25.0.3"
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.12.4",
+    "esbuild": "^0.28.0",
+    "eslint": "^10.4.0",
+    "globals": "^17.6.0",
+    "husky": "^9.1.7",
+    "jest": "^30.4.2",
+    "semantic-release": "^25.0.3",
+    "ts-jest": "^29.4.11",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0"
   }
 }
