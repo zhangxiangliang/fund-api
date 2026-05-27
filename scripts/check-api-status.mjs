@@ -50,6 +50,16 @@ await writeFile(
   })}\n`
 );
 
+await writeFile(
+  "status/index.zh-CN.json",
+  `${JSON.stringify({
+    schemaVersion: 1,
+    label: "接口状态",
+    message: `${available}/${total} 可用`,
+    color: available === total ? "brightgreen" : available > 0 ? "yellow" : "red",
+  })}\n`
+);
+
 for (const result of results) {
   await writeFile(
     `status/${result.name}.json`,
@@ -57,6 +67,17 @@ for (const result of results) {
       schemaVersion: 1,
       label: result.name,
       message: result.ok ? "up" : "down",
+      color: result.ok ? "brightgreen" : "red",
+    })}\n`
+  );
+
+  const zhName = result.name === "tencent" ? "腾讯" : result.name;
+  await writeFile(
+    `status/${result.name}.zh-CN.json`,
+    `${JSON.stringify({
+      schemaVersion: 1,
+      label: zhName,
+      message: result.ok ? "可用" : "不可用",
       color: result.ok ? "brightgreen" : "red",
     })}\n`
   );
