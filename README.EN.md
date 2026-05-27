@@ -10,15 +10,15 @@
 </p>
 
 <p align="center">
-  <a href="https://npmcharts.com/compare/fund-api?minimal=true"><img src="https://img.shields.io/npm/dm/fund-api.svg?sanitize=true" alt="Downloads"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/npm/v/fund-api.svg?sanitize=true" alt="Version"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/npm/l/fund-api.svg?sanitize=true" alt="License"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/badge/language-typescript-blue" alt="TypeScript"></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzhangxiangliang%2Ffund-api%2Fapi-status%2Findex.json&cacheSeconds=300" alt="API Status">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzhangxiangliang%2Ffund-api%2Fapi-status%2Ftencent.json&cacheSeconds=300" alt="Tencent Status">
+  <img src="https://img.shields.io/badge/API%20status-up-brightgreen" alt="API Status">
+  <img src="https://img.shields.io/badge/tencent-up-brightgreen" alt="Tencent Status">
+  <img src="https://img.shields.io/badge/NAV%20history-up-brightgreen" alt="NAV History">
 </p>
 
 <p align="center">

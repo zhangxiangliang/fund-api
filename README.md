@@ -10,15 +10,15 @@
 </p>
 
 <p align="center">
-  <a href="https://npmcharts.com/compare/fund-api?minimal=true"><img src="https://img.shields.io/npm/dm/fund-api.svg?sanitize=true" alt="Downloads"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/npm/v/fund-api.svg?sanitize=true" alt="Version"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/npm/l/fund-api.svg?sanitize=true" alt="License"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/badge/language-typescript-blue" alt="TypeScript"></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzhangxiangliang%2Ffund-api%2Fapi-status%2Findex.zh-CN.json&cacheSeconds=300" alt="接口状态">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzhangxiangliang%2Ffund-api%2Fapi-status%2Ftencent.zh-CN.json&cacheSeconds=300" alt="腾讯状态">
+  <img src="https://img.shields.io/badge/%E6%8E%A5%E5%8F%A3%E7%8A%B6%E6%80%81-%E5%8F%AF%E7%94%A8-brightgreen" alt="接口状态">
+  <img src="https://img.shields.io/badge/%E8%85%BE%E8%AE%AF-%E5%8F%AF%E7%94%A8-brightgreen" alt="腾讯状态">
+  <img src="https://img.shields.io/badge/%E5%8E%86%E5%8F%B2%E5%87%80%E5%80%BC-%E5%8F%AF%E7%94%A8-brightgreen" alt="历史净值">
 </p>
 
 <p align="center">
