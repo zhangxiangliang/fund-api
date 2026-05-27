@@ -1,6 +1,6 @@
 {
   "name": "fund-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Fund market data API for Node.js and TypeScript",
   "repository": "https://github.com/zhangxiangliang/fund-api",
   "homepage": "https://github.com/zhangxiangliang/fund-api#readme",

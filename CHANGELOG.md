@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/zhangxiangliang/fund-api/compare/v1.1.0...v1.2.0) (2026-05-27)
+
+
+### Features
+
+* align pages demo ([cfbe2e5](https://github.com/zhangxiangliang/fund-api/commit/cfbe2e5a8be2ffec71f26457c72377aff1cd6ef9))
+
 # [1.1.0](https://github.com/zhangxiangliang/fund-api/compare/v1.0.0...v1.1.0) (2026-05-27)
 
 
