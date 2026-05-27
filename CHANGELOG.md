@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/zhangxiangliang/fund-api/compare/v1.2.0...v1.2.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* scope demo storage ([8c93a36](https://github.com/zhangxiangliang/fund-api/commit/8c93a36059386947a8e04a939ab031bfde10f866))
+
 # [1.2.0](https://github.com/zhangxiangliang/fund-api/compare/v1.1.0...v1.2.0) (2026-05-27)
 
 
