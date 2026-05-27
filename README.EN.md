@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="https://npmcharts.com/compare/fund-api?minimal=true"><img src="https://img.shields.io/npm/dm/fund-api.svg?sanitize=true" alt="Downloads"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/npm/v/fund-api.svg?sanitize=true" alt="Version"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/npm/l/fund-api.svg?sanitize=true" alt="License"></a>
   <a href="https://www.npmjs.com/package/fund-api"><img src="https://img.shields.io/badge/language-typescript-blue" alt="TypeScript"></a>
@@ -18,7 +19,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/API%20status-up-brightgreen" alt="API Status">
   <img src="https://img.shields.io/badge/tencent-up-brightgreen" alt="Tencent Status">
-  <img src="https://img.shields.io/badge/NAV%20history-up-brightgreen" alt="NAV History">
 </p>
 
 <p align="center">
