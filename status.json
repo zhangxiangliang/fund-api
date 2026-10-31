@@ -1,0 +1,10 @@
+{
+  "results": [
+    {
+      "name": "tencent",
+      "ok": true,
+      "latencyMs": 1380,
+      "checkedAt": "2026-10-31T15:51:19.404Z"
+    }
+  ]
+}
